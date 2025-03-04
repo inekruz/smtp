@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Банковская система</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Перевод средств</h1>
+        <form id="transferForm">
+            <label for="fromAccount">Счет отправителя:</label>
+            <input type="text" id="fromAccount" required>
+            <label for="toAccount">Счет получателя:</label>
+            <input type="text" id="toAccount" required>
+            <label for="amount">Сумма:</label>
+            <input type="number" id="amount" required>
+            <button type="submit">Перевести</button>
+        </form>
+        <div id="message"></div>
+    </div>
+    
+    <div class="container">
+        <h1>Пополнение и вывод средств</h1>
+        <form id="transactionForm">
+            <label for="accountId">Счет:</label>
+            <input type="text" id="accountId" required>
+            <label for="transactionAmount">Сумма:</label>
+            <input type="number" id="transactionAmount" required>
+            <button type="button" id="depositButton">Пополнить</button>
+            <button type="button" id="withdrawButton">Вывести</button>
+        </form>
+        <div id="transactionMessage"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

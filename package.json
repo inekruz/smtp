@@ -1,0 +1,22 @@
+{
+  "name": "dz",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "nodemon"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "nodemailer": "^6.10.0",
+    "nodemon": "^3.1.9",
+    "path": "^0.12.7"
+  }
+}

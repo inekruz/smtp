@@ -1,0 +1,17 @@
+[
+  {
+    "account_id": "1",
+    "balance": 3900,
+    "email": "nekruz15ik@gmail.com"
+  },
+  {
+    "account_id": "2",
+    "balance": 1715,
+    "email": "nekruz@nekruz.su"
+  },
+  {
+    "account_id": "3",
+    "balance": 2000,
+    "email": ""
+  }
+]
