@@ -1,16 +1,43 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+// const path = require('path');
+// const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static('client'));
 
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: process.env.user,
+//         pass: process.env.pass
+//     }
+// });
+
+// // функция отправки письма
+// const sendEmailNotification = (email, subject, text) => {
+//     const mailOptions = {
+//         from: process.env.user,
+//         to: email,
+//         subject: subject,
+//         text: text
+//     };
+
+//     transporter.sendMail(mailOptions, (error, info) => {
+//         if (error) {
+//             console.log('Ошибка при отправке письма:', error);
+//         } else {
+//             console.log('Письмо отправлено:', info.response);
+//         }
+//     });
+// };
+
 class InsufficientFundsError extends Error {}
 class InvalidAmountError extends Error {}
 class AccountNotFoundError extends Error {}
-class AuthenticationError extends Error {}
 
 class Logger {
     static logError(error) {
@@ -20,16 +47,10 @@ class Logger {
 }
 
 class BankAccount {
-    constructor(account_id, balance = 0, email = '', login = '', pass = '') {
+    constructor(account_id, balance = 0, email = '') {
         this.account_id = account_id;
         this.balance = balance;
         this.email = email;
-        this.login = login;
-        this.pass = pass;
-    }
-
-    verifyCredentials(login, pass) {
-        return this.login === login && this.pass === pass;
     }
 
     withdraw(amount) {
@@ -47,17 +68,9 @@ class BankAccount {
     }
 }
 
-
 class TransactionManager {
     constructor(accounts) {
         this.accounts = accounts;
-    }
-
-    authenticate(account_id, login, pass) {
-        const account = this.accounts[account_id];
-        if (!account || !account.verifyCredentials(login, pass)) {
-            throw new AuthenticationError('Неверный логин или пароль');
-        }
     }
 
     transfer(from_account_id, to_account_id, amount) {
@@ -69,6 +82,12 @@ class TransactionManager {
         }
         this.accounts[from_account_id].withdraw(amount);
         this.accounts[to_account_id].deposit(amount);
+
+        // const fromAccount = this.accounts[from_account_id];
+        // const toAccount = this.accounts[to_account_id];
+        
+        // sendEmailNotification(fromAccount.email, 'Транзакция завершена', `Вы перевели ${amount} на счет ${to_account_id}. Ваш новый баланс: ${fromAccount.balance}`);
+        // sendEmailNotification(toAccount.email, 'Транзакция завершена', `Вы получили ${amount} от счета ${from_account_id}. Ваш новый баланс: ${toAccount.balance}`);
     }
 
     saveAccounts() {
@@ -81,7 +100,7 @@ const loadAccounts = () => {
     const accountsData = JSON.parse(data);
     const accounts = {};
     accountsData.forEach(account => {
-        accounts[account.account_id] = new BankAccount(account.account_id, account.balance, account.email, account.login, account.pass);
+        accounts[account.account_id] = new BankAccount(account.account_id, account.balance, account.email);
     });
     return accounts;
 };
@@ -89,26 +108,13 @@ const loadAccounts = () => {
 const accounts = loadAccounts();
 const transactionManager = new TransactionManager(accounts);
 
-app.post('/transfer', (req, res) => {
-    const { from_account_id, to_account_id, amount, login, pass } = req.body;
-
-    try {
-        transactionManager.authenticate(from_account_id, login, pass);
-        transactionManager.transfer(from_account_id, to_account_id, amount);
-        transactionManager.saveAccounts();
-        res.status(200).send('Перевод выполнен успешно!');
-    } catch (error) {
-        Logger.logError(error);
-        res.status(400).send(error.message);
-    }
-});
-
 app.post('/deposit', (req, res) => {
     const { account_id, amount } = req.body;
 
     try {
         transactionManager.accounts[account_id].deposit(amount);
         transactionManager.saveAccounts();
+        // sendEmailNotification(transactionManager.accounts[account_id].email, 'Пополнение счета', `Ваш счет был пополнен на сумму ${amount}. Баланс: ${transactionManager.accounts[account_id].balance}`);
         res.status(200).send('Счет пополнен успешно!');
     } catch (error) {
         Logger.logError(error);
@@ -122,7 +128,21 @@ app.post('/withdraw', (req, res) => {
     try {
         transactionManager.accounts[account_id].withdraw(amount);
         transactionManager.saveAccounts();
+        // sendEmailNotification(transactionManager.accounts[account_id].email, 'Снятие средств', `С вашего счета было снято ${amount}. Баланс: ${transactionManager.accounts[account_id].balance}`);
         res.status(200).send('Средства успешно выведены!');
+    } catch (error) {
+        Logger.logError(error);
+        res.status(400).send(error.message);
+    }
+});
+
+app.post('/transfer', (req, res) => {
+    const { from_account_id, to_account_id, amount } = req.body;
+
+    try {
+        transactionManager.transfer(from_account_id, to_account_id, amount);
+        transactionManager.saveAccounts();
+        res.status(200).send('Перевод выполнен успешно!');
     } catch (error) {
         Logger.logError(error);
         res.status(400).send(error.message);

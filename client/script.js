@@ -6,6 +6,15 @@ document.getElementById('transferForm').addEventListener('submit', function(even
     const amount = parseFloat(document.getElementById('amount').value);
     const messageDiv = document.getElementById('message');
 
+    const login = prompt('Введите логин');
+    const pass = prompt('Введите пароль');
+
+    if (!login || !pass) {
+        messageDiv.textContent = 'Ошибка: Логин и пароль обязательны для ввода';
+        messageDiv.className = 'error';
+        return;
+    }
+
     messageDiv.textContent = '';
     messageDiv.className = '';
 
@@ -26,7 +35,13 @@ document.getElementById('transferForm').addEventListener('submit', function(even
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ from_account_id: fromAccount, to_account_id: toAccount, amount: amount })
+        body: JSON.stringify({ 
+            from_account_id: fromAccount, 
+            to_account_id: toAccount, 
+            amount: amount, 
+            login: login, 
+            pass: pass 
+        })
     })
     .then(response => {
         if (!response.ok) {

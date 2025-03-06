@@ -20,6 +20,19 @@
         </form>
         <div id="message"></div>
     </div>
+
+    <!-- Popup для логина и пароля -->
+    <div id="authPopup" class="popup">
+        <div class="popup-content">
+            <h2>Подтверждение транзакции</h2>
+            <label for="popupLogin">Логин:</label>
+            <input type="text" id="popupLogin" required>
+            <label for="popupPassword">Пароль:</label>
+            <input type="password" id="popupPassword" required>
+            <button id="confirmAuth">Подтвердить</button>
+            <button id="cancelAuth">Отмена</button>
+        </div>
+    </div>
     
     <div class="container">
         <h1>Пополнение и вывод средств</h1>
