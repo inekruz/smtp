@@ -1,7 +1,7 @@
 [
   {
     "account_id": "1",
-    "balance": 5000,
+    "balance": 3500,
     "balance_usd": 500,
     "balance_eur": 0,
     "email": "nekruz@nekruz.su",
@@ -10,7 +10,7 @@
   },
   {
     "account_id": "2",
-    "balance": 2815,
+    "balance": 4000,
     "balance_usd": 500,
     "balance_eur": 0,
     "email": "nekruz2@nekruz.su",

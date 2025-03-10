@@ -31,7 +31,7 @@ app.post('/deposit', (req, res) => {
     const { account_id, amount, currency } = req.body;
 
     try {
-        transactionManager.accounts[account_id].deposit(amount, currency);
+        transactionManager.accounts[account_id].deposit(amount, currency, transactions);
         transactionManager.saveAccounts();
         // sendEmailNotification(transactionManager.accounts[account_id].email, 'Пополнение счета', `Ваш счет был пополнен на сумму ${amount}. Баланс: ${transactionManager.accounts[account_id].balance}`);
         res.status(200).send('Счет пополнен успешно!');

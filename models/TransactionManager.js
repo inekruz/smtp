@@ -1,19 +1,23 @@
 const fs = require('fs');
 // const sendEmailNotification = require('../email/email');
 const { AuthenticationError, AccountNotFoundError, InvalidAmountError } = require('./Errors');
+const { loadTransactions } = require('../utils/LoadAccounts');
+const Transactions = require('../models/Transactions');
+
+const transactions = loadTransactions();
+const transactionManager = new Transactions(transactions);
 
 class TransactionManager {
     constructor(accounts) {
         this.accounts = accounts;
     }
-
+    
     authenticate(account_id, login, pass) {
         const account = this.accounts[account_id];
         if (!account || !account.verifyCredentials(login, pass)) {
             throw new AuthenticationError('Неверный логин или пароль');
         }
     }
-
     transfer(from_account_id, to_account_id, amount, currency) {
         if (!this.accounts[from_account_id] || !this.accounts[to_account_id]) {
             throw new AccountNotFoundError('Один из счетов не найден');
@@ -23,7 +27,7 @@ class TransactionManager {
         }
         this.accounts[from_account_id].withdraw(amount, currency);
         this.accounts[to_account_id].deposit(amount, currency);
-
+        transactionManager.setTransactions(from_account_id, to_account_id, amount, currency);
         // const fromAccount = this.accounts[from_account_id];
         // const toAccount = this.accounts[to_account_id];
         

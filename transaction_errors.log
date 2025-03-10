@@ -4,3 +4,17 @@
 2025-03-10T04:45:30.837Z - Error: Неверный логин или пароль
 2025-03-10T04:45:34.691Z - Error: Неверный логин или пароль
 2025-03-10T05:42:42.072Z - Error: Неверный логин или пароль
+2025-03-10T06:29:33.298Z - TypeError: this.transactions.push is not a function
+2025-03-10T06:30:26.424Z - TypeError: this.transactions[randomInt(...)] is not a function
+2025-03-10T06:32:12.918Z - TypeError: Cannot read properties of undefined (reading 'constructor')
+2025-03-10T06:33:07.609Z - TypeError: Cannot read properties of undefined (reading 'addTransactions')
+2025-03-10T06:36:49.057Z - TypeError: Cannot read properties of undefined (reading 'addTransactions')
+2025-03-10T06:36:56.170Z - TypeError: Cannot read properties of undefined (reading 'addTransactions')
+2025-03-10T06:37:50.087Z - TypeError: Cannot read properties of undefined (reading 'addTransactions')
+2025-03-10T06:41:36.805Z - ReferenceError: setTransactions is not defined
+2025-03-10T06:42:59.851Z - ReferenceError: setTransactions is not defined
+2025-03-10T06:46:45.726Z - ReferenceError: randomInt is not defined
+2025-03-10T06:47:02.367Z - ReferenceError: fs is not defined
+2025-03-10T06:47:14.493Z - TypeError: Cannot convert undefined or null to object
+2025-03-10T06:48:48.009Z - TypeError: Cannot convert undefined or null to object
+2025-03-10T06:50:24.275Z - ReferenceError: transaction is not defined
