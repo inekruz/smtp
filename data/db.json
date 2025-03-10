@@ -1,15 +1,19 @@
 [
   {
     "account_id": "1",
-    "balance": 2877,
-    "email": "nekruz15ik@gmail.com",
+    "balance": 5000,
+    "balance_usd": 500,
+    "balance_eur": 0,
+    "email": "nekruz@nekruz.su",
     "login": "11",
     "pass": "11"
   },
   {
     "account_id": "2",
-    "balance": 2738,
-    "email": "nekruz@nekruz.su",
+    "balance": 2815,
+    "balance_usd": 500,
+    "balance_eur": 0,
+    "email": "nekruz2@nekruz.su",
     "login": "22",
     "pass": "22"
   }

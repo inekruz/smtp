@@ -4,6 +4,7 @@ document.getElementById('transferForm').addEventListener('submit', function(even
     const fromAccount = document.getElementById('fromAccount').value;
     const toAccount = document.getElementById('toAccount').value;
     const amount = parseFloat(document.getElementById('amount').value);
+    const currency = document.getElementById('currency').value;
     const messageDiv = document.getElementById('message');
 
     const login = prompt('Введите логин');
@@ -39,6 +40,7 @@ document.getElementById('transferForm').addEventListener('submit', function(even
             from_account_id: fromAccount, 
             to_account_id: toAccount, 
             amount: amount, 
+            currency: currency, 
             login: login, 
             pass: pass 
         })
@@ -59,9 +61,13 @@ document.getElementById('transferForm').addEventListener('submit', function(even
     });
 });
 
+
+// Пополнение и вывод
+
 document.getElementById('depositButton').addEventListener('click', function() {
     const accountId = document.getElementById('accountId').value;
     const amount = parseFloat(document.getElementById('transactionAmount').value);
+    const currency = document.getElementById('transactionCurrency').value;
     const transactionMessageDiv = document.getElementById('transactionMessage');
 
     transactionMessageDiv.textContent = '';
@@ -79,12 +85,14 @@ document.getElementById('depositButton').addEventListener('click', function() {
         return;
     }
 
+    console.log(currency)
+    console.log(amount)
     fetch('/deposit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ account_id: accountId, amount: amount })
+        body: JSON.stringify({ account_id: accountId, amount: amount, currency: currency })
     })
     .then(response => {
         if (!response.ok) {
@@ -106,9 +114,11 @@ document.getElementById('depositButton').addEventListener('click', function() {
     });
 });
 
+
 document.getElementById('withdrawButton').addEventListener('click', function() {
     const accountId = document.getElementById('accountId').value;
     const amount = parseFloat(document.getElementById('transactionAmount').value);
+    const currency = document.getElementById('transactionCurrency').value;
     const transactionMessageDiv = document.getElementById('transactionMessage');
 
     transactionMessageDiv.textContent = '';
@@ -131,7 +141,7 @@ document.getElementById('withdrawButton').addEventListener('click', function() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ account_id: accountId, amount: amount })
+        body: JSON.stringify({ account_id: accountId, amount: amount, currency: currency })
     })
     .then(response => {
         if (!response.ok) {

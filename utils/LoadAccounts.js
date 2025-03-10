@@ -6,7 +6,7 @@ const loadAccounts = () => {
     const accountsData = JSON.parse(data);
     const accounts = {};
     accountsData.forEach(account => {
-        accounts[account.account_id] = new BankAccount(account.account_id, account.balance, account.email, account.login, account.pass);
+        accounts[account.account_id] = new BankAccount(account.account_id, account.balance, account.balance_usd, account.balance_eur, account.email, account.login, account.pass);
     });
     return accounts;
 };
