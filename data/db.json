@@ -16,5 +16,14 @@
     "email": "nekruz2@nekruz.su",
     "login": "22",
     "pass": "22"
+  },
+  {
+    "account_id": "3",
+    "balance": 2815,
+    "balance_usd": 500,
+    "balance_eur": 0,
+    "email": "test@test.ru",
+    "login": "test",
+    "pass": "test"
   }
 ]

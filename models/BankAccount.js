@@ -11,11 +11,35 @@ class BankAccount {
         this.pass = pass;
     }
 
+    // Курсы валют
+    static exchangeRates = {
+        RUB_TO_USD: 0.01,  // 1 RUB = 0.01 USD
+        RUB_TO_EUR: 0.01,  // 1 RUB = 0.01 EUR
+        USD_TO_RUB: 100,   // 1 USD = 100 RUB
+        EUR_TO_RUB: 100    // 1 EUR = 100 RUB
+    };
+
+    // Метод для конвертации валют
+    convert(amount, fromCurrency, toCurrency) {
+        if (fromCurrency === "RUB" && toCurrency === "USD") {
+            return amount * BankAccount.exchangeRates.RUB_TO_USD;
+        } else if (fromCurrency === "RUB" && toCurrency === "EUR") {
+            return amount * BankAccount.exchangeRates.RUB_TO_EUR;
+        } else if (fromCurrency === "USD" && toCurrency === "RUB") {
+            return amount * BankAccount.exchangeRates.USD_TO_RUB;
+        } else if (fromCurrency === "EUR" && toCurrency === "RUB") {
+            return amount * BankAccount.exchangeRates.EUR_TO_RUB;
+        } else {
+            return amount;
+        }
+    }
+
     verifyCredentials(login, pass) {
         return this.login === login && this.pass === pass;
     }
 
     withdraw(amount, currency) {
+        let amountInRUB = 0;
 
         switch (currency) {
             case "RUB":
@@ -26,25 +50,29 @@ class BankAccount {
                 break;
 
             case "USD":
-                    if (amount > this.balance_usd) {
-                        throw new InsufficientFundsError('Недостаточно средств на счете');
-                    }
-                    this.balance_usd -= amount;
-                    break;
+                amountInRUB = this.convert(amount, "USD", "RUB");
+                if (amountInRUB > this.balance) {
+                    throw new InsufficientFundsError('Недостаточно средств на счете');
+                }
+                this.balance -= amountInRUB;
+                break;
 
             case "EUR":
-                    if (amount > this.balance_eur) {
-                        throw new InsufficientFundsError('Недостаточно средств на счете');
-                    }
-                    this.balance_eur -= amount;
-                    break;
+                amountInRUB = this.convert(amount, "EUR", "RUB");
+                if (amountInRUB > this.balance) {
+                    throw new InsufficientFundsError('Недостаточно средств на счете');
+                }
+                this.balance -= amountInRUB;
+                break;
         
             default:
-                break;
+                throw new Error('Неизвестная валюта');
         }
     }
 
     deposit(amount, currency) {
+        let amountInRUB = 0;
+
         switch (currency) {
             case "RUB":
                 if (amount <= 0) {
@@ -54,21 +82,23 @@ class BankAccount {
                 break;
 
             case "USD":
-                    if (amount <= 0) {
-                        throw new InsufficientFundsError('Сумма пополнения должна быть положительной!');
-                    }
-                    this.balance_usd += amount;
-                    break;
+                amountInRUB = this.convert(amount, "USD", "RUB");
+                if (amount <= 0) {
+                    throw new InsufficientFundsError('Сумма пополнения должна быть положительной!');
+                }
+                this.balance += amountInRUB;
+                break;
 
             case "EUR":
-                    if (amount <= 0) {
-                        throw new InsufficientFundsError('Сумма пополнения должна быть положительной!');
-                    }
-                    this.balance_eur += amount;
-                    break;
+                amountInRUB = this.convert(amount, "EUR", "RUB");
+                if (amount <= 0) {
+                    throw new InsufficientFundsError('Сумма пополнения должна быть положительной!');
+                }
+                this.balance += amountInRUB;
+                break;
         
             default:
-                break;
+                throw new Error('Неизвестная валюта');
         }
     }
 }
