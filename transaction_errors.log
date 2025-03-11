@@ -18,3 +18,8 @@
 2025-03-10T06:47:14.493Z - TypeError: Cannot convert undefined or null to object
 2025-03-10T06:48:48.009Z - TypeError: Cannot convert undefined or null to object
 2025-03-10T06:50:24.275Z - ReferenceError: transaction is not defined
+2025-03-11T04:11:10.823Z - TypeError: Cannot convert undefined or null to object
+2025-03-11T04:13:04.890Z - TypeError: Cannot convert undefined or null to object
+2025-03-11T04:14:45.748Z - ReferenceError: transactions is not defined
+2025-03-11T04:16:53.620Z - Error: ENOENT: no such file or directory, open 'C:\Users\Nekrus\Desktop\smtp\models\data\transactions.json'
+2025-03-11T04:19:14.851Z - Error: Недостаточно средств на счете

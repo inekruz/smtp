@@ -1,14 +1,21 @@
 const { randomInt } = require('crypto');
 const fs = require('fs');
+const path = require('path');
 
 class Transactions {
-    constructor(id, user_1 = 0, user_2 = 0, amount = 0, currency = 'RUB', date = "11/11/1111 11:11") {
-        this.id = id;
-        this.user_1 = user_1;
-        this.user_2 = user_2;
-        this.amount = amount;
-        this.currency = currency;
-        this.date = date;
+    constructor() {
+        // Указываем правильный путь к файлу transactions.json
+        this.filePath = path.join(__dirname, '..', 'data', 'transactions.json');
+        this.transactions = this.loadTransactions(); // Загрузка существующих транзакций
+    }
+
+    loadTransactions() {
+        // Проверка, существует ли файл, и загрузка данных
+        if (fs.existsSync(this.filePath)) {
+            const data = fs.readFileSync(this.filePath);
+            return JSON.parse(data);
+        }
+        return []; // Возвращаем пустой массив, если файл не существует
     }
 
     setTransactions(from_account_id, to_account_id, amount, currency) {
@@ -22,20 +29,23 @@ class Transactions {
         
         const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
 
-        const ids = randomInt(100000)
-        // Добавление транзакции
+        const ids = randomInt(100000);
+        // Создание объекта транзакции
+        const transaction = {
+            id: ids,
+            user_1: from_account_id,
+            user_2: to_account_id,
+            amount: amount,
+            currency: currency,
+            date: formattedDate
+        };
 
-        console.log(`${ids} ${from_account_id} ${to_account_id} ${amount} ${currency} ${formattedDate}`)
-        this.id = ids;
-        this.user_1 = from_account_id;
-        this.user_2 = to_account_id;
-        this.amount = amount;
-        this.currency = currency;
-        this.date = formattedDate;
+        // Добавление транзакции в массив
+        this.transactions.push(transaction);
 
-        fs.writeFileSync('data/transactions.json', JSON.stringify(Object.values(this.transactions), null, 2));
+        // Запись всех транзакций в файл
+        fs.writeFileSync(this.filePath, JSON.stringify(this.transactions, null, 2));
     }
-
 }
 
 module.exports = Transactions;

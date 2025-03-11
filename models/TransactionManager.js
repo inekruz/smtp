@@ -5,7 +5,7 @@ const { loadTransactions } = require('../utils/LoadAccounts');
 const Transactions = require('../models/Transactions');
 
 const transactions = loadTransactions();
-const transactionManager = new Transactions(transactions);
+const transactionss = new Transactions(transactions);
 
 class TransactionManager {
     constructor(accounts) {
@@ -27,7 +27,7 @@ class TransactionManager {
         }
         this.accounts[from_account_id].withdraw(amount, currency);
         this.accounts[to_account_id].deposit(amount, currency);
-        transactionManager.setTransactions(from_account_id, to_account_id, amount, currency);
+        transactionss.setTransactions(from_account_id, to_account_id, amount, currency);
         // const fromAccount = this.accounts[from_account_id];
         // const toAccount = this.accounts[to_account_id];
         
