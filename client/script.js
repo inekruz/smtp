@@ -162,3 +162,71 @@ document.getElementById('withdrawButton').addEventListener('click', function() {
         transactionMessageDiv.className = 'error';
     });
 });
+
+
+// pie-chart 
+
+document.getElementById('timeRange').addEventListener('change', function() {
+    const timeRange = this.value;
+
+    fetch(`/statistics?timeRange=${timeRange}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка при получении данных');
+            }
+            return response.json();
+        })
+        .then(chartData => {
+            // Обновляем данные графика
+            updateChart(chartData);
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+});
+
+function updateChart(chartData) {
+    if (myPieChart) {
+        myPieChart.destroy();
+    }
+    myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Категория 1 - Тип 1', 'Категория 1 - Тип 2', 'Категория 1 - Тип 3', 
+                     'Категория 2 - Тип 1', 'Категория 2 - Тип 2', 'Категория 2 - Тип 3'],
+            datasets: [{
+                label: 'Транзакции',
+                data: chartData, // Используем данные, полученные с сервера
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Статистика транзакций'
+                }
+            }
+        }
+    });
+}
